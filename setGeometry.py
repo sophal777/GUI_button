@@ -1,69 +1,76 @@
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QSpinBox, QComboBox
 import sys
 
-BUTTON_NAMES = [
+name_button = [
     "Button1", "Button2", "Button3", "Button4", "Button5",
     "Button6", "Button7", "Button8", "sophal",
     "Button10", "Button11", "Button12"
 ]
 
-def create_buttons(self, max_per_row=5, total_buttons=12):
+def my_b(self, max_per_row=5, Create_button=12):
     start_x = 50
     start_y = 100
     x_spacing = 120
     y_spacing = 50
 
-    for i in range(total_buttons):
+    for i in range(Create_button):
         row = i // max_per_row
         col = i % max_per_row
         x = start_x + col * x_spacing
         y = start_y + row * y_spacing
-        name = BUTTON_NAMES[i]
-        create_single_button(self, x, y, name)
+        name = name_button[i]
+        button_main(self, x, y, name)
 
-def get_button_geometry(x, y):
-    return (x, y, 110, 35)
+def button(x, y):
+    width = 110
+    height = 35
+    return (x, y, width, height)
 
-def create_single_button(self, x, y, name):
-    button = QPushButton(name, self)
-    button.setGeometry(*get_button_geometry(x, y))
+def button_main(self, x, y, name):
+    btn = QPushButton(name, self)
+    btn.setGeometry(*button(x, y))
     method_name = f"{name}_{x}_{y}"
     if hasattr(self, method_name):
-        button.clicked.connect(getattr(self, method_name))
+        btn.clicked.connect(getattr(self, method_name))
     else:
         print(f"Method {method_name} not found.")
 
-def create_spinbox(self, object_name="Threads", start_x=50, start_y=50):
+def sin(self, name_sin="Threads", start_x=50, start_y=50):
     spinbox = QSpinBox(self)
     spinbox.setRange(1, 12)
     spinbox.setValue(5)
     spinbox.setGeometry(start_x, start_y, 110, 35)
-    spinbox.setPrefix(f"{object_name}: ")
-    setattr(self, object_name, spinbox)
+    spinbox.setPrefix(f"{name_sin}: ")
+    setattr(self, name_sin, spinbox)
 
-def create_combobox(self, object_name="GenderBox", start_x=50, start_y=400, items=None):
-    if items is None:
-        items = ["Female_Male", "Female", "Male"]
-    combobox = QComboBox(self)
-    combobox.addItems(items)
-    combobox.setGeometry(start_x, start_y, 110, 35)
-    setattr(self, object_name, combobox)
+def comb(self, name_com="ComboBox", start_x=50, start_y=400, Items=None):
+    if Items is None:
+        Items = ["Female_Male", "Female", "Male"]
+    combo = QComboBox(self)
+    combo.addItems(Items)
+    combo.setGeometry(start_x, start_y, 110, 35)
+    setattr(self, name_com, combo)
 
 class CustomLayout(QWidget):
     def __init__(self):
         super().__init__()
-        self.setWindowTitle("Dynamic Buttons with Layout")
+        self.setWindowTitle("Dynamic Buttons with Line Wrap")
         self.setGeometry(800, 100, 700, 600)
 
-        create_combobox(self, object_name="GenderBox", start_x=50, start_y=400)
-        create_buttons(self, max_per_row=5, total_buttons=12)
-        create_spinbox(self, "Threads", start_x=50, start_y=50)
-        create_spinbox(self, "LOOP", start_x=180, start_y=50)
+        # Create ComboBox
+        comb(self, name_com="ComboBox", start_x=50, start_y=400)
+
+        # Create Buttons
+        my_b(self, max_per_row=5, Create_button=12)
+
+        # Create SpinBoxes
+        sin(self, "Threads", start_x=50, start_y=50)
+        sin(self, "LOOP", start_x=180, start_y=50)
 
     def Button1_50_100(self):
         loop = self.LOOP.value()
         threads = self.Threads.value()
-        gender = self.GenderBox.currentText()
+        gender = self.ComboBox.currentText()
         print(f"Button1 clicked → LOOP: {loop}, THREADS: {threads}, Gender: {gender}")
 
     def Button2_170_100(self): print("Button2 clicked")
